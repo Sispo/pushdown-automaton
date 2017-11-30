@@ -14,7 +14,7 @@ namespace PDA
 
             while (true)
             {
-                Console.WriteLine($"\n1) ex\n");
+                Console.WriteLine($"\n1) Example PDA\n");
 
                 PDAS selection = (PDAS)Convert.ToInt32(Console.ReadLine());
 

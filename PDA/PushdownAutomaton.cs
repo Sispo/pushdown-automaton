@@ -300,7 +300,7 @@ namespace PDA
             string lastRow = Normalize(stackAlphabet[0], rowHeaderWidth);
             lastRow += " | ";
 
-            for (int j = 0; j < inputAlphabet.Count; j++)
+            for (int j = 0; j < inputAlphabet.Count - 1; j++)
             {
                 string column = Normalize("reject", rowWidth);
                 column += " | ";
