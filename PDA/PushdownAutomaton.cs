@@ -272,43 +272,33 @@ namespace PDA
             columns += inputAlphabet.First();
             Console.WriteLine(columns);
 
-            for (int i = 0; i < controlMatrix.Count - 1; i++)
+            for (int i = 0; i < controlMatrix.Count; i++)
             {
                 string rowHeaderString = Normalize($"{stackAlphabet[i]}",rowHeaderWidth);
                 rowHeaderString += " | ";
                 Console.Write(rowHeaderString);
 
-                for (int j = 0; j < inputAlphabet.Count - 1; j++)
+                for (int j = 0; j < inputAlphabet.Count; j++)
                 {
+                    string rowString = "";
                     if (controlMatrix[i][j] != null)
                     {
-                        string rowString = Normalize(controlMatrix[i][j].ToString(), rowWidth);
-                        rowString += " | ";
-                        Console.Write(rowString);
+                        rowString = Normalize(controlMatrix[i][j].ToString(), rowWidth);
+                    } else if (i == controlMatrix.Count - 1 && j == inputAlphabet.Count - 1)
+                    {
+                        rowString = Normalize("admit", rowWidth);
                     } else
                     {
-                        string rowString = Normalize("reject", rowWidth);
-                        rowString += " | ";
-                        Console.Write(rowString);
+                        rowString = Normalize("reject", rowWidth);
                     }
+
+                    rowString += j == inputAlphabet.Count - 1 ? "" : " | ";
+                    Console.Write(rowString);
                 }
-                    
-                Console.Write($"reject");
+
                 Console.WriteLine();
             }
-
-            string lastRow = Normalize(stackAlphabet[0], rowHeaderWidth);
-            lastRow += " | ";
-
-            for (int j = 0; j < inputAlphabet.Count - 1; j++)
-            {
-                string column = Normalize("reject", rowWidth);
-                column += " | ";
-                lastRow += column;
-            }
-
-            lastRow += "admit";
-            Console.WriteLine(lastRow);
+            
             Console.WriteLine();
             Console.WriteLine();
         }
