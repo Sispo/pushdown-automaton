@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PDA
 {
-    enum PDAS { NullNOneN = 1 }
+    enum PDAS { Example = 1 }
     class Program
     {
         static void Main(string[] args)
@@ -20,12 +20,12 @@ namespace PDA
 
                 switch (selection)
                 {
-                    case PDAS.NullNOneN:
+                    case PDAS.Example:
 
-                        PushdownAutomaton pa0n1n = new PushdownAutomaton("ex.txt");
-                        pa0n1n.Show();
+                        PushdownAutomaton examplePA = new PushdownAutomaton("../../../ex.txt");
+                        examplePA.Show();
 
-                        Show(pa0n1n.Run(pa0n1n.Split(GetString(), pa0n1n.inputAlphabet)));
+                        Show(examplePA.Run(examplePA.Split(GetString(), examplePA.inputAlphabet)));
 
                         break;
                 }

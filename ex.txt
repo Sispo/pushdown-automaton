@@ -1,0 +1,10 @@
+a b c d e
+<S> <A> <B> <C> b d
+<S>
+replace(<B>b<A>), keep; replace(<B>b<A>), keep; replace(<B>b<A>), keep; pull, shift; replace(<B>b<A>), keep; reject;
+replace(b<A><C>), keep; replace(<B>), keep; replace(<B>), keep; reject; replace(b<A><C>), keep; reject;
+reject; pull, keep; replace(d<S>), shift; pull, keep; reject; pull, keep;
+pull, shift; reject; reject; reject; replace(d), shift; reject;
+reject; pull, shift; reject; reject; reject; reject;
+reject; reject; reject; pull, shift; reject; reject;
+reject; reject; reject; reject; reject; admit;
