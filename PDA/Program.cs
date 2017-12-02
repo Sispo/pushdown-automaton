@@ -3,33 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PushdownAutomaton;
+using PresentTense;
 
-namespace PDA
+namespace Main
 {
-    enum PDAS { Example = 1 }
     class Program
     {
         static void Main(string[] args)
         {
 
-            while (true)
+            var ptapp = new PresentTenseApplication();
+
+            for(int i = 0; i < 10; i++)
             {
-                Console.WriteLine($"\n1) Example PDA\n");
-
-                PDAS selection = (PDAS)Convert.ToInt32(Console.ReadLine());
-
-                switch (selection)
-                {
-                    case PDAS.Example:
-
-                        PushdownAutomaton examplePA = new PushdownAutomaton("../../../ex.txt");
-                        examplePA.Show();
-
-                        Show(examplePA.Run(examplePA.Split(GetString(), examplePA.inputAlphabet)));
-
-                        break;
-                }
+                Console.WriteLine(ptapp.Generate());
             }
+            
         }
 
         public static void Show(bool isAdmitted)
@@ -37,11 +27,11 @@ namespace PDA
             Console.WriteLine();
             if (isAdmitted)
             {
-                Console.WriteLine("String is admitted");
+                Console.WriteLine("String is recognized");
             }
             else
             {
-                Console.WriteLine("String is rejected");
+                Console.WriteLine("String is not recognized");
             }
         }
 
