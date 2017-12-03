@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PushdownAutomaton;
-using PresentTense;
 
 namespace Main
 {
@@ -13,12 +12,7 @@ namespace Main
         static void Main(string[] args)
         {
 
-            var ptapp = new PresentTenseApplication();
-
-            for(int i = 0; i < 10; i++)
-            {
-                Console.WriteLine(ptapp.Generate());
-            }
+            
             
         }
 

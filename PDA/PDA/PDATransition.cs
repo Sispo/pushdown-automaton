@@ -14,22 +14,13 @@ namespace PushdownAutomaton
         public string popFromStack { get; private set; }
         public string[] pushToStack { get; private set; }
 
-        public PDATransition(int previousState, int nextState, string readFromInput, string popFromStack, string[] pushToStack)
+        public PDATransition(int previousState, int nextState, string readFromInput, string popFromStack, params string[] pushToStack)
         {
             this.state = previousState;
             this.nextState = nextState;
             this.readFromInput = readFromInput;
             this.popFromStack = popFromStack;
             this.pushToStack = pushToStack;
-        }
-
-        public PDATransition(int previousState, int nextState, string readFromInput, string popFromStack, string pushToStack)
-        {
-            this.state = previousState;
-            this.nextState = nextState;
-            this.readFromInput = readFromInput;
-            this.popFromStack = popFromStack;
-            this.pushToStack = new string[1]{ pushToStack };
         }
 
         public bool IsSuitable(PDACondition condition)
