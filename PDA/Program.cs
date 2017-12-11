@@ -1,8 +1,27 @@
-﻿using System;
+﻿/*
+ * Copyright (c) 2017 Tymofii Dolenko
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PushdownAutomaton;
 
 namespace Main
@@ -13,14 +32,14 @@ namespace Main
         {
             var stackElementO = "<0>";
             var alphabet = new string[]{ "(", ")" };
-            //Stack alphabet consists of all non-terminals + bottom stack element
-            var stackAlphabet = new string[] { stackElementO, PDA.startStackElement };
+            //Stack alphabet consists of all non-terminals + the initial stack symbol
+            var stackAlphabet = new string[] { stackElementO, PDA.initialStackSymbol };
 
             //Transition from state 0 to state 1 (first and second parameters)
             //We read ( from input (third parameter)
-            //We pop Z0 (bottom element) from stack (fourth parameter)
+            //We pop Z0 (the initial stack symbol) from stack (fourth parameter)
             //We push <0> and Z0 to stack (last parameters, we can have more than one at a time)
-            var transitionStart = new PDATransition(0, 1, "(", PDA.startStackElement, stackElementO, PDA.startStackElement);
+            var transitionStart = new PDATransition(0, 1, "(", PDA.initialStackSymbol, stackElementO, PDA.initialStackSymbol);
 
             //Transition from state 1 to state 1
             //We read ( from input
@@ -40,7 +59,7 @@ namespace Main
             //We push nothing (empty string) to stack
             //As a result both input and stack are now empty
             //We will successfully finish our recognition process
-            var transitionFinal = new PDATransition(1, 2, "", PDA.startStackElement, "");
+            var transitionFinal = new PDATransition(1, 2, "", PDA.initialStackSymbol, "");
 
             var transitions = new PDATransition[]{ transitionStart, transitionOpen, transitionClose, transitionFinal };
 
