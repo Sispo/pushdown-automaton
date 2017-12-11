@@ -1,0 +1,15 @@
+﻿<Properties StartupConfiguration="{1289E7B0-458B-4578-973D-8DABAFED6D00}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="PDA/PDA/PDATransition.cs">
+    <Files>
+      <File FileName="PDA/Program.cs" Line="61" Column="83" />
+      <File FileName="PDA/PDA/PushdownAutomaton.cs" Line="231" Column="1" />
+      <File FileName="PDA/PDA/PDATransition.cs" Line="28" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>

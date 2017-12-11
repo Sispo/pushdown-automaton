@@ -25,7 +25,7 @@ namespace PushdownAutomaton
 
         public bool IsSuitable(PDACondition condition)
         {
-            return (condition.stack.Count > 0 && condition.state == state && condition.stack.Peek() == popFromStack) && (readFromInput == "" || readFromInput == condition.currentInput.Peek());
+            return (condition.stack.Count > 0 && condition.state == state && condition.stack.Peek() == popFromStack) && (readFromInput == "" || (condition.currentInput.Count > 0 && readFromInput == condition.currentInput.Peek()));
         }
 
         public bool IsSuitableForGenerating(PDACondition condition)

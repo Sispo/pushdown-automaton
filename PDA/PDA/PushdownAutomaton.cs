@@ -19,7 +19,7 @@ namespace PushdownAutomaton
         public IEnumerable<string> inputAlphabet { get; private set; }
 
         //Initiating random here to pick random transitions
-        private Random random = new Random();
+        private readonly Random random = new Random();
 
         public PDA(IEnumerable<string> inputAlphabet,
                    IEnumerable<string> stackAlphabet,
@@ -35,13 +35,11 @@ namespace PushdownAutomaton
 
         public PDARecognitionResult Recognize(string[] input)
         {
-            string[] lowercased = Lowercased(input);
-
-            if (IsInputValid(lowercased))
+            if (IsInputValid(input))
             {
                 var inputStack = new Stack<string>();
 
-                foreach(var element in lowercased.Reverse())
+                foreach (var element in input.Reverse())
                 {
                     inputStack.Push(element);
                 }
@@ -49,12 +47,14 @@ namespace PushdownAutomaton
                 if (CanRecognize(inputStack))
                 {
                     return PDARecognitionResult.Recognized;
-                } else
+                }
+                else
                 {
                     return PDARecognitionResult.NotRecognized;
                 }
 
-            } else
+            }
+            else
             {
                 return PDARecognitionResult.InputIsNotValid;
             }
@@ -67,20 +67,20 @@ namespace PushdownAutomaton
 
         public IEnumerable<PDAResult> GetResults(Stack<string> inputStack)
         {
-            
+
             var results = new HashSet<PDAResult>();
 
             string[] startStackArray = new string[] { startStackElement };
 
-            var conditions = new List<PDACondition>() { new PDACondition(inputStack, new Stack<string>(startStackArray),0) };
+            var conditions = new List<PDACondition>() { new PDACondition(inputStack, new Stack<string>(startStackArray), 0) };
             var hasFoundMatch = false;
 
-            while(conditions.Count > 0 && !hasFoundMatch)
+            while (conditions.Count > 0 && !hasFoundMatch)
             {
 
                 var newCondtionsSet = new HashSet<PDACondition>();
 
-                foreach(var condition in conditions)
+                foreach (var condition in conditions)
                 {
                     var nextConditions = FindNextConditions(condition).ToList();
 
@@ -90,20 +90,21 @@ namespace PushdownAutomaton
                         continue;
                     }
 
-                    foreach(var nextCondition in nextConditions)
+                    foreach (var nextCondition in nextConditions)
                     {
                         if (nextCondition.currentInput.Count == 0 && nextCondition.stack.Count == 0)
                         {
                             results.Add(new PDAResult(true, nextCondition));
                             hasFoundMatch = true;
                             break;
-                        } else
+                        }
+                        else
                         {
                             newCondtionsSet.Add(nextCondition);
                         }
                     }
 
-                    if(hasFoundMatch)
+                    if (hasFoundMatch)
                     {
                         break;
                     }
@@ -142,7 +143,7 @@ namespace PushdownAutomaton
                 newCurrentInput.Pop();
             }
             //Pushing elements to stack
-            foreach(string elementToPush in transition.pushToStack.Reverse())
+            foreach (string elementToPush in transition.pushToStack.Reverse())
             {
                 if (elementToPush != "")
                 {
@@ -153,31 +154,10 @@ namespace PushdownAutomaton
             return new PDACondition(newCurrentInput, newStack, transition.nextState);
         }
 
-        private string[] Lowercased(string[] input)
-        {
-            return (from element in input
-                   select element.ToLower()).ToArray();
-        }
-
-        private bool IsInputValid(string[] input)
-        {
-            foreach(var element in input)
-            {
-                if (!inputAlphabet.Contains(element))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        public List<string> Generate(double lengthCoefficient)
+        public string[] Generate()
         {
 
             List<string> generatedString = new List<string>();
-
-            //Settings boundaries for coefficient [0,1]
-            double coefficient = lengthCoefficient > 1 ? 1 : lengthCoefficient < 0 ? 0 : lengthCoefficient;
 
             var results = new HashSet<PDAResult>();
 
@@ -189,12 +169,12 @@ namespace PushdownAutomaton
             {
                 var nextTransitions = FindNextTransitionsForGenerating(condition);
 
-                if (nextTransitions.Count() > 0)
+                if (nextTransitions.Any())
                 {
                     int index = random.Next(0, nextTransitions.Count());
 
                     var nextTransition = nextTransitions.ElementAt(index);
-                    
+
                     if (nextTransition.readFromInput != "")
                     {
                         generatedString.Add(nextTransition.readFromInput);
@@ -202,13 +182,70 @@ namespace PushdownAutomaton
                     }
 
                     condition = ApplyTransition(nextTransition, condition);
-                } else
+                }
+                else
                 {
                     break;
                 }
             }
 
-            return generatedString;
+            return generatedString.ToArray();
+        }
+
+        //Use this split method only if input is not separated by any character
+        //and there is no such alphabet element that is the left side of another element
+        //Example "word" and "wordA" - are not accepted
+        //Whereas "word" and "Aword" - accepted
+        public string[] Split(string input)
+        {
+            List<string> splitted = new List<string>();
+            List<string> hypoStrings = new List<string>();
+            string currentString = "";
+
+            for (int i = 0; i < input.Length; i++)
+            {
+
+                char current = input[i];
+                currentString += current;
+                hypoStrings = inputAlphabet.ToList().FindAll(x => x.Contains(currentString));
+
+                if (hypoStrings.Count == 0)
+                {
+                    throw new Exception("Invalid string.");
+                }
+                else
+                {
+                    if (hypoStrings.Any(x => x == currentString))
+                    {
+                        splitted.Add(currentString);
+                        currentString = "";
+                    }
+                }
+
+
+            }
+
+            return splitted.ToArray();
+        }
+
+        public string Concatenate(string[] input, string separator) {
+            var output = "";
+            foreach(var element in input) {
+                output += separator == null ? element : element + separator;
+            }
+            return output;
+        }
+
+        private bool IsInputValid(string[] input)
+        {
+            foreach (var element in input)
+            {
+                if (!inputAlphabet.Contains(element))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
